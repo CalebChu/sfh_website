@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load account_type %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/gallery.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/gallery.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="top">
+        <h1 id="heading">gallery</h1>
+        <div id="options">
+            {% if user|is_officer %}
+                <a href="{% url 'default:upload_gallery_image' %}"><img id="add-icon" class="med-icon" src="{% static "images/add.png" %}"></a>
+            {% endif %}
+        </div>
+    </div>
+    <div id="gallery-content">
+        {% for image in images %}
+            {% if image.emphasized %}
+            <div class="gallery-unit emphasized">
+            {% else %}
+            <div class="gallery-unit">
+            {% endif %}
+                <img src="{{ image.image }}" class="gallery-image">
+                <div class="image-info">
+                    <p class="gallery-caption">{{ image.caption }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load time_handler %}
+
+{% block styles %}
+   <link rel='stylesheet' href="{% static 'style/dashboard.css' %}">
+{% endblock %}
+
+{% block body %}
+   <div id="top">
+      <h1 id="heading">Dashboard</h1>
+   </div>
+
+   <div id="dashboard">
+      <a id="volunteering" class="dashboard-item blue" href="{% url 'private:volunteering_opps' %}">
+         <div class="dashboard-item-title">volunteering <img class="med-icon" src="{% static 'images/search-w.png' %}"></div>
+         <div class="dashboard-item-content">
+            {% if not volunteering %}
+                  <img class="large-icon" src="{% static "images/search.png" %}">
+                  <div class="dashboard-item-bottom-text">sign up for volunteering</div>
+            {% else %}
+               {% for opp in volunteering %}
+                  <div class="dashboard-preview volunteering-preview">
+                     <div>{{ opp.title }} {% if opp.complete %}(complete){% endif %}</div>
+                     <div>{{ opp.date_time }} </div>
+                     {% comment %} ({{ opp.date_time|time_until_or_passed:opp.start_time }}) {% endcomment %}
+                  </div>
+               {% endfor %} 
+               {% if v_overflow > 0 %}
+                  <div class="dashboard-preview overflow">+{{ v_overflow }} more</div>
+               {% endif %}
+            {% endif %}
+         </div>
+      </a>
+      <a id="events" class="dashboard-item green" href="{% url 'private:events' %}">
+         <div id="events" class="dashboard-item-title">events <img class="med-icon" src="{% static 'images/calendar-w.png' %}"></div>
+         <div class="dashboard-item-content">
+            {% if not events %}
+               <img class="large-icon" src="{% static "images/calendar.png" %}">
+               <div class="dashboard-item-bottom-text">no events posted</div>
+            {% else %}
+               {% for event in events %}
+                  <div class="dashboard-preview event-preview">
+                     <div>{{ event.title }} {% if event.complete %} (complete){% endif %}</div>
+                     <div>{{ event.date_time }} </div>
+                    {% comment %} ({{ event.date_time|time_until_or_passed:event.start_time }}) {% endcomment %}
+                  </div>
+               {% endfor %} 
+               {% if e_overflow > 0 %}
+                  <div class="dashboard-preview overflow-green">+{{ e_overflow }} more</div>
+               {% endif %}
+            {% endif %}
+         </div>
+      </a>
+      <a class="dashboard-item red" href="{% url 'private:leaderboard' %}">
+         <div id="announcements" class="dashboard-item-title">leaderboard <img class="med-icon" src="{% static 'images/podium.png' %}"></div>
+         <div class="dashboard-item-content">
+            <img class="large-icon" src="{% static "images/podium-r.png" %}">
+            <div class="dashboard-item-bottom-text">view point rankings</div>
+         </div>
+      </a>
+      <a class="dashboard-item yellow" href="{% url 'private:points' %}">
+         <div id="points" class="dashboard-item-title">points <img class="med-icon" src="{% static 'images/trophy-w.png' %}"></div>
+         <div class="dashboard-item-content">
+            <img class="large-icon" src="{% static "images/trophy.png" %}">
+            <div class="dashboard-item-bottom-text">view your point total & history</div>
+         </div>
+      </a>
+   </div>
+{% endblock %}

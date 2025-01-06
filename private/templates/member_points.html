@@ -1,0 +1,33 @@
+<div id="sub-body">
+    <div id="left-section">
+        <div id="history" class="flex-column-body">
+            <i class='bx bx-history bx-md'></i>
+            {% for item in history %}
+                {% if not item.subtract %}<div class="history-item add">{% else %}<div class="history-item subtract">{% endif %}
+                    <div class="history-item-left">
+                        <div class="history-item-name">{{ item.description }}</div>
+                        <div class="history-item-date">{{ item.performed_by.user.first_name }} {{ item.performed_by.user.last_name }} - {{ item.date_time }}</div>
+                    </div>
+                    <div class="history-item-right">
+                        <div class="history-item-points">{% if not item.subtract %}+{{ item.value }}{% else %}{{ item.value }}{% endif %}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="right-section">
+        <div id="points-display">
+            <div class="display-title">
+                my points
+            </div>
+            <div class="display-value">
+                <div class="display-main">
+                    {{ points }}
+                </div>
+                <div class="display-sub">
+                    /60
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

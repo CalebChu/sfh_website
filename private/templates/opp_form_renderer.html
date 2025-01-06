@@ -1,0 +1,29 @@
+{% load static %}
+
+{% for field in form %}
+    {% if "date" in field.name %}
+        <div>
+            {{ field.errors }}
+            {{ field.label_tag }} <input type="datetime-local" name="{{ field.name }}" required id="id_{{ field.name }}" value="{{ form.instance.date_time|date:"Y-m-d H:i" }}"> 
+        </div>
+    {% elif "duration" in field.name %}
+        {% if "h" in field.name %}
+        <div>
+            <label for="id_{{ field.name }}">duration: </label>
+            {{ field.errors }}
+            <div>
+                <input type="number" name="{{ field.name }}" required id="id_{{ field.name }}" min="0" max="12" value="{{ form.instance.duration_hours }}">{{ field.label }}
+        {% endif %}
+        {% if "m" in field.name %}
+            {{ field.errors }}
+                <input type="number" name="{{ field.name }}" required id="id_{{ field.name }}" min="0" max="59" step="5" value="{{ form.instance.duration_minutes }}">{{ field.label }}
+            </div>
+        </div>
+        {% endif %}
+    {% else %}
+        <div>
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endif %}
+{% endfor %}

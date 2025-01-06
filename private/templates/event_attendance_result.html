@@ -1,0 +1,54 @@
+{% load static %}
+{% load time_handler %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% include 'base_styles.html' %}
+        <link href={% static 'style/event-attendance-result.css' %} rel='stylesheet'>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <div id="result-container" class="flex-column-body">
+            {% if result == 0 %}
+            <div id="result-icon-container-ok" class="result-icon-container">
+                <i class='bx bx-check bx-lg'></i>
+            {% else %}
+            <div id="result-icon-container-bad" class="result-icon-container">
+                <i class='bx bx-x bx-lg'></i>
+            {% endif %}
+            </div>
+            <div>
+                {% if result == 0 %}
+                    Your attendance has been checked
+                {% elif result == 1 %}
+                    That isn't for you, officer
+                {% elif result == 2 %}
+                    Can't find that event
+                {% elif result == 3 %}
+                    Invalid attendance code
+                {% elif result == 4 %}
+                    Your attendance has already been marked
+                {% elif result == 5 %}
+                    Attendance is currently closed
+                {% endif %}
+                ({{ result }}).
+            </div> 
+            <div>
+                You may close this tab or return to your <a href="{% url 'private:dashboard' %}">dashboard</a>.
+            </div>
+        </div>
+    </body>
+</html>

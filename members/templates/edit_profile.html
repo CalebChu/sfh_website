@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/back.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center;">My Profile</h1>
+
+    <div>
+        <form action="{% url 'members:edit_profile' %}" method="POST" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ user_form }}
+            {{ form }} 
+
+            <input type="submit" value="save">
+            <a href="{% url 'private:dashboard' %}">cancel</a>
+        </form>
+    </div>
+{% endblock %}

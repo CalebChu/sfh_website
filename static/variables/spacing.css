@@ -1,0 +1,19 @@
+:root {
+    --l: 5rem;
+    --m: 2.5rem;
+    --ms: 1.8rem;
+    --s: 1rem;
+    --xs: 0.5rem;
+    --xxs: 0.3rem;
+}
+
+@media screen and (max-width: 450px) {
+    :root {
+        --l: 3.5rem;
+        --m: 1.8rem;
+        --ms: 1rem;
+        --s: 0.8rem;
+        --xs: 0.3rem;
+        --xxs: 0.3rem;
+    }
+}

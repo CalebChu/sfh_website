@@ -1,0 +1,92 @@
+#options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#img-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-input {
+    display: none;
+}
+
+#gallery-content {
+    display: grid;
+    gap: var(--s);
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    grid-auto-rows: 300px;
+    grid-auto-flow: dense;
+    margin: var(--ms);
+}
+
+/* https://unsplash.com/images/stock */
+/* 
+    display: grid;
+    grid-column-gap: var(--column-gutter);
+    align-items: start;
+    grid-template-columns: repeat(var(--columns), minmax(0, 1fr)); */
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    position: absolute;
+}
+
+@media screen and (min-width: 600px) {
+    .tall {
+        grid-row: span 2 / auto;
+    }
+
+    .wide {
+        grid-column: span 2 / auto;
+    }
+
+    .double-tall {
+        grid-row: span 4 / auto;
+    }
+
+    .double-wide {
+        grid-column: span 4 / auto;
+    }
+}
+
+.gallery-unit {
+    position: relative;
+}
+
+.image-info {
+    box-sizing: border-box;
+    padding: var(--s);
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    background-color: var(--accent-t);
+    color: var(--dominant);
+    transition: opacity 0.2s;
+}
+
+.image-info:hover {
+    opacity: 1;
+}
+
+.gallery-caption {
+    font-weight: 400;
+    font-size: 1.2rem;
+    font-weight: lighter;
+    margin: 0;
+}

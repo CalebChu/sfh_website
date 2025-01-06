@@ -1,0 +1,80 @@
+{% load static %}
+{% load account_type %}
+
+<div id='header-body'>
+    <div id='header-left'>
+        <div id='menu-opener-wrapper' class='image-hover-transition--parent'>
+            <img id='menu-opener' class='icon image-hover-transition--initial' src={% static 'images/menu.png' %}>
+            <img id='menu-opener-hover' class='icon image-hover-transition--hover' src={% static 'images/menu-hover.png' %}>
+        </div>
+        {% if user|is_officer or user|is_member %}
+            <div id='dashboard-header-wrapper' class='image-hover-transition--parent nav-wrapper'>
+                <a href="{% url 'private:dashboard' %}">
+                    <img id='dashboard-header' class='icon image-hover-transition--initial' src={% static 'images/dashboard.png' %}>
+                    <img id='dashboard-header-hover' class='icon image-hover-transition--hover' src={% static 'images/dashboard-hover.png' %}>
+                </a>
+                <div id='dashboard-header-nav' class='nav'>
+                    <a href="{% url 'private:volunteering_opps' %}" class="nav-link">volunteering</a>
+                    <a href="{% url 'private:events' %}" class="nav-link">events</a>
+                    <a href="{% url 'private:announcements' %}" class="nav-link">announcements</a>
+                    <a href="{% url 'private:points' %}" class="nav-link">points</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <h1 id='site-title'>sfh</h1>
+    <div id='account-wrapper' class='image-hover-transition--parent nav-wrapper'>
+        {% if user|is_member %}
+        <a href="{% url 'members:edit_profile' %}">
+        {% elif user|is_officer %}
+        <a href="{% url 'officers:edit_profile' %}">
+        {% else %}
+        <a href="{% url 'default:sign_in' %}">
+        {% endif %}
+            <img id='account' class='icon image-hover-transition--initial' src={% static 'images/user.png' %}>
+            <img id='account-hover' class='icon image-hover-transition--hover' src={% static 'images/user-hover.png' %}>
+        </a>
+        <div id='account-nav' class='nav'>
+            {% if user.is_authenticated %}
+                <div id='nav-top'>
+                    <div id='email'>{{ user.first_name }} {{ user.last_name }}</div>
+                    {% if user|is_officer %}
+                        <div id='account-email'>{{ user.email }}</div>
+                        <div id='account-type'>officer account</div>
+                    </div>
+                    {% elif user|is_member %}
+                        <div id='account-email'>{{ user.email }}</div>
+                        <div id='account-type'>member account</div>
+                    </div>
+                    {% else %}
+                    </div>
+                        <a href="{% url 'members:form' %}" class="nav-link">member form</a>
+                    {% endif %}
+                {% if user|is_officer %}
+                    <a href="{% url 'officers:edit_profile' %}" class="nav-link">profile</a>
+                {% elif user|is_member %}
+                    <a href="{% url 'members:edit_profile' %}" class="nav-link">profile</a>
+                {% endif %}
+                <a href="{% url 'default:sign_out' %}" class="nav-link">log out</a>
+            {% else %}
+                {% comment %} <div id="g_id_onload"
+                    data-client_id="315344692568-7ob5gte8klqm0jfiknp1stiki0173qkp.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-login_uri="http://localhost:8000/auth-receiver"
+                    data-itp_support="true">
+                </div>
+
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-shape="pill"
+                    data-theme="outline"
+                    data-text="signin_with"
+                    data-size="large"
+                    data-logo_alignment="left">
+                </div> {% endcomment %}
+                <a href="{% url 'default:sign_in' %}" class="nav-link">sign in</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

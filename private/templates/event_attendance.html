@@ -1,0 +1,60 @@
+{% load static %}
+{% load time_handler %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% comment %} <link rel="stylesheet" href="{% static 'style/base.css' %}"> {% endcomment %}
+        {% include 'base_styles.html' %}
+        <link href={% static 'style/attendance.css' %} rel='stylesheet'>
+        <link href={% static 'style/event-attendance.css' %} rel='stylesheet'>
+        <script src="{% static 'javascript/qrcode.js' %}"></script>
+        <script src="{% static 'javascript/davidshimjs-qrcodejs-04f46c6/qrcode.min.js' %}"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div id="top">
+            <a class="back-arrow" href="{% url 'private:events' %}"><i class='bx bx-arrow-back bx-md'></i></a>
+        </div>
+
+        <div class="flex-column-body">
+            <div id="event-title">Attendance for {{ event.title }}{% if not event.attendance_open %} - CLOSED{% endif %}</div>
+        
+            <a id="qr-code" value="{{ event.id }}+{{ event.current_code }}"></a>
+            <div id="attendance-info">
+                <div>Points per member: {{ event.points_available }}</div>
+                <div>Members attended: {{ event.members_attended.count }}</div>
+            </div>
+            <div id="attendance-time">Valid {{ event.last_opened_time }} - {{ event.last_opened_time|calculate_end_time:event.attendance_duration }}</div>
+            <form id="attendance-duration-form" method="POST" autocomplete="off" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="input-container">
+                    <label for="attendance-duration">Valid for:</label>
+                    <input type="number" required id="attendance-duration" min="0" max="60" value="{{ event.attendance_duration_minutes }}"> minutes
+                </div>
+                <input id="save-duration" type="submit" value="save">
+            </form>
+            <div id="event-options">
+                <div id="event-options-left">
+                    <a class="event-option" id="refresh" href="{% url 'private:event_attendance' id=event.id option='refresh' %}">refresh</a>
+                    <a class="event-option" id="reopen" href="{% url 'private:event_attendance' id=event.id option='reopen' %}">reopen</a>
+                </div>
+                <div id="event-options-right">
+                    <a class="event-option" id="close" href="{% url 'private:event_attendance' id=event.id option='close' %}">close</a>
+                    <a class="event-option" id="mark-absences" href="{% url 'private:event_attendance' id=event.id option='markabsences' %}">mark absences</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

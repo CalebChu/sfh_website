@@ -1,0 +1,29 @@
+#title {
+    width: 100vw;
+    height: 100%;
+    background-color: var(--secondary-two);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@keyframes oscilate {
+    0% {transform: translateY(0px);}
+    40% {transform: translateY(20px);}
+    100% {transform: translateY(0px);}
+}
+
+#content-indicator {
+    color: var(--dominant);
+    position: absolute;
+    margin-bottom: var(--ms);
+    animation-name: oscilate;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+}
+
+/* canvas {
+    background-color: black;
+} */

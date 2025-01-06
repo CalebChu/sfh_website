@@ -1,0 +1,17 @@
+:root {
+    --dominant: #f5f4f2;
+    --dominant-t: #f5f4f296;
+    --secondary-one: #9ecbae;
+    --secondary-one-t: #9ecbae41;
+    --secondary-two: #b2def0;
+    --secondary-two-t: #b2def041;
+    --accent: #18191b;
+    --accent-t: #18191b73;
+    --text: #121212;
+
+    --red: #ff6961;
+    --yellow: #FFDD3C;
+    --red-t: #ff0d0023;
+    --yellow-t: #ffde3c88;
+    /* --yellow-t: ; */
+}

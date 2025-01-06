@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load account_type %}
+{% load time_handler %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/volunteering_opps.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="top">
+        <h1 id="heading">events</h1>
+        <div id="options">
+            {% if user|is_officer %}
+                <a href="{% url 'private:create_event' %}"><img id="add-icon" class="med-icon" src="{% static "images/add.png" %}"></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flex-column-body">
+        {% for event in events %}
+            <div id="opp-id-{{ event.id }}" class="opp-listing fill-width">
+                <div class="opp-main">
+                    <div class="opp-title">{{ event.title }}</div>
+                    <div class="opp-info">
+                        <div class="location">{{ event.location }}</div>  <div class="date-time">{{ event.date_time }} - {{ event.date_time|calculate_end_time:event.duration }}</div>
+                    </div>
+                    <div class="description">{{ event.description }}</div>
+
+                    {% if event.show_officer_info %}
+                        <div class="officer-info">
+                            <div class="posted-by-tag">posted by</div>
+                            <div class="officer-name-number">
+                                <div class="officer-name">{{ event.posted_by.user.first_name }} {{ event.posted_by.user.last_name }}</div>
+                                <div class="officer-number">281-508-9166</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="opp-bottom">
+                {% if user|is_officer %}
+                    <a href="{% url 'private:event_attendance' event.id %}" class="attendance officer-option"><div class="register-text">attendance</div></a>
+                    {% if user == event.posted_by.user %}
+                        <div class="officer-options">
+                            <a href="{% url 'private:edit_event' event.id %}" class="edit officer-option"><div class="register-text">edit</div></a>
+                            <a href="{% url 'private:edit_event' event.id %}" class="delete officer-option"><div class="register-text">delete</div></a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        {% if not events.count == 0 %}
+        <div class="empty-indicator" style="display: none;">
+        {% else %}
+        <div class="empty-indicator" style="display: flex;">
+        {% endif %}
+            <img class="large-icon" src="{% static "images/search-t.png" %}">
+            <div>it's all empty here</div>
+        </div>
+    </div>
+{% endblock %}

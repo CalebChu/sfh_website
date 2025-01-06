@@ -1,0 +1,75 @@
+{% load static %}
+{% load profile_link %}
+
+<div id="sub-body">
+    <div class="flex-column-body">
+        <div id="points-top">
+            <input type="text" id="search-members" placeholder="search members">
+            {% comment %} <div id="member-filters" class="icon image-hover-transition--parent nav-wrapper">
+                <img id="filter-icon" class="icon image-hover-transition--initial" src="{% static 'images/filter-t.png' %}">
+                <img id="filter-icon" class="icon image-hover-transition--hover" src="{% static 'images/filter.png' %}">
+                <div id="filter-options" class="nav">
+                    <div id="attendance-filter">
+                        <div>attended</div>
+                        <div>
+                            <select>
+                                <option value="opp">volunteering</option>
+                                <option value="event">event</option>
+                            </select>
+                            <select>
+                                <option value="something">Animal Shelter</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="grade-filter">
+                        <div>grade</div>
+                        <div>
+                            <select>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+        <div id="members-list" class="flex-column-body">
+            <div id="members-list-header">
+                <img id="member-icon" class="icon" src="{% static 'images/user-t.png' %}">
+                <div class="members-list-item-right">
+                    <img id="points-icon" class="icon" src="{% static 'images/trophy-t.png' %}">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="check-all-members" class="members-checkbox checkbox">
+                        <i class='bx bx-check bx-sm icon'></i>
+                    </div>
+                    <div id="options-all" class="options-container icon image-hover-transition--parent">
+                        <img class="options-icon icon image-hover-transition--initial" src="{% static 'images/options-t.png' %}">
+                        <img class="options-icon icon image-hover-transition--hover" src="{% static 'images/options.png' %}">
+                    </div>
+                </div>
+            </div>
+            {% for member in members %}
+                <div id="member-id-{{ member.id }}" class="member-listing-container visible">
+                    <div class="members-list-item-name">
+                        {{ member|profile }} 
+                    </div>
+                    <div class="members-list-item-right">
+                        <div class="members-list-item-points">
+                            {{ member.points }}
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="members-checkbox checkbox">
+                            <i class='bx bx-check bx-sm icon'></i>
+                        </div>
+                        <a class="options-container icon image-hover-transition--parent" href="{% url 'private:edit_points' ids=member.id %}">
+                            <img class="options-icon icon image-hover-transition--initial" src="{% static 'images/options-t.png' %}">
+                            <img class="options-icon icon image-hover-transition--hover" src="{% static 'images/options.png' %}">
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

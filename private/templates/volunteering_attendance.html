@@ -1,0 +1,73 @@
+{% load static %}
+{% load profile_link %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>sfh</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% include 'base_styles.html' %}
+        <link href={% static 'style/attendance.css' %} rel='stylesheet'>
+        <script src="{% static 'javascript/attendance.js' %}"></script>
+    </head>
+    <body>
+        <div id="top">
+            <a class="back-arrow" href="{% url 'private:volunteering_opps' %}"><i class='bx bx-arrow-back bx-md'></i></a>
+            <div class="mark-all">
+                <div class="mark-all-text">mark all</div>
+                <div class="mark-attendance mark-present mark-present-all"><i class='bx bx-check bx-sm'></i></div>
+                <div class="mark-attendance mark-absent mark-absent-all"><i class='bx bx-x bx-sm'></i></div>
+            </div>
+        </div>
+        <div class="flex-column-body">
+            <div id="unmarked" class="flex-column-body attendees">
+                {% for attendee in attendees %}
+                    <div id="{{ attendee.member.id }}" class="attendance-listing">
+                        <div class="attendee-name">{{ attendee.member|profile }}</div>
+                        <div class="attendee-options">
+                            <button class="mark-present"><i class='bx bx-check bx-sm'></i></button>
+                            <div class="mark-absent"><i class='bx bx-x bx-sm'></i></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="show-members show-present closed">
+                <div class="attendance-opener"><i class='bx bx-chevron-right icon-open'></i>show members marked present ({{ present.count }})</div>
+                <div class="members-container members-container-closed">
+                    {% for attendee in present %}
+                        <div id="{{ attendee.member.id }}" class="attendance-listing">
+                            <div class="attendee-name">{{ attendee.member|profile }}</div>
+                            <div class="attendee-options">
+                                <button class="mark-present"><i class='bx bx-check bx-sm'></i></button>
+                                <div class="mark-absent"><i class='bx bx-x bx-sm'></i></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="show-members show-absent closed">
+                <div class="attendance-opener"><i class='bx bx-chevron-right icon-open'></i>show members marked absent ({{ absent.count }})</div>
+                <div class="members-container members-container-closed">
+                    {% for attendee in absent %}
+                        <div id="{{ attendee.member.id }}" class="attendance-listing">
+                            <div class="attendee-name">{{ attendee.member|profile }}</div>
+                            <div class="attendee-options">
+                                <button class="mark-present"><i class='bx bx-check bx-sm'></i></button>
+                                <div class="mark-absent"><i class='bx bx-x bx-sm'></i></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+       <script src="" async defer></script>
+    </body>
+</html>

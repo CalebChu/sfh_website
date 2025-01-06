@@ -1,0 +1,20 @@
+#form-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form.flex-column-body {
+    gap: var(--xs);
+    width: auto;
+    align-items: start;
+}
+
+form>div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--xs);
+    width: 100%;
+}

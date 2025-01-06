@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/index.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/index.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="title">
+        <i id="content-indicator" class="bx bx-chevron-down bx-lg"></i>
+    </div>
+
+    <div id="content"></div>
+
+    {% comment %} <script type="module" src="{% static 'javascript/3d.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.3/build/spline-viewer.js"></script>
+    <spline-viewer id='title' url="https://prod.spline.design/2i6oQiCnTCiC-RD4/scene.splinecode"></spline-viewer> {% endcomment %}
+{% endblock %}

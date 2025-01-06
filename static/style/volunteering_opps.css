@@ -1,0 +1,197 @@
+#sub-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(max(calc(25% - var(--s)), 300px), 1fr));
+    grid-gap: var(--s);
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.opp-listing {
+    padding: var(--ms);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ms);
+    justify-content: space-between;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    border-radius: 10px;
+}
+
+.opp-main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.opp-bottom {
+    width: 100%;
+    display: flex;
+    gap: var(--xxs);
+    flex-direction: column;
+}
+
+.officer-options {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+    grid-gap: var(--xxs);
+}
+
+.opp-info {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.opp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.opp-member-count {
+    display: flex;
+    align-items: baseline;
+}
+
+.full {
+    color: #E98E59;
+}
+
+.small-icon {
+    padding-bottom: 0;
+}
+
+.opp-title {
+    font-size: xx-large;
+    color: var(--accent);
+}
+
+.date-time {
+    font-size: smaller;
+    color: var(--accent-t);
+}
+
+.location {
+    color: var(--accent-t);
+}
+
+.description {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--xs);
+    margin-top: var(--s);
+    border-left: 2px var(--secondary-two) solid;
+    background-color: var(--secondary-two-t);
+    max-height: 150px;
+    overflow: auto;
+}
+
+.register {
+    width: 100%;
+    border-radius: 5px;
+    padding: var(--xs);
+    transition: filter 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--xs);
+    box-sizing: border-box;
+}
+
+.unregistered {
+    border: 0;
+    background-color: var(--secondary-one);
+    color: var(--dominant);
+}
+
+.registered {
+    background-color: var(--dominant);
+    color: var(--secondary-one);
+    border: var(--secondary-one) 1px solid;
+}
+
+.register:active {
+    filter: brightness(0.9);
+}
+
+.unregistered .bx-check {
+    display: none;
+    visibility: hidden;
+}
+
+.registered .bx-check {
+    display: block;
+    visibility: visible;
+}
+
+.edit {
+    /* border-radius: 5px 0px 0px 5px; */
+    background-color: var(--dominant);
+    color: var(--accent-t);
+    border: var(--accent-t) 1px solid;
+}
+
+.attendance {
+    /* border-radius: 0px 0px 0px 0px; */
+    background-color: var(--secondary-one);
+    color: var(--dominant);
+    /* border: var(--accent-t) 1px solid; */
+}
+
+.delete {
+    /* border-radius: 0px 5px 5px 0px; */
+    background-color: var(--dominant);
+    color: var(--red);
+    border: var(--red) 1px solid;
+}
+
+.officer-option {
+    border-radius: 5px;
+    text-decoration: none;
+    flex-grow: 1;
+    padding: var(--xs);
+    transition: filter 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--xs);
+    box-sizing: border-box;
+}
+
+.officer-info {
+    width: 100%;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: var(--s);
+    color: var(--accent);
+    gap: var(--xs);
+}
+
+.posted-by-tag {
+    color: var(--accent-t);
+}
+
+.officer-name-number {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.empty-indicator {
+    opacity: 0.5;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: var(--accent-t);
+}
