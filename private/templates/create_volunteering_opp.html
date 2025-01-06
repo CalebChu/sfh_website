@@ -19,13 +19,22 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <h1 style="text-align: center;">Create {{ title }} Listing</h1>
+        <div id="top">
+            <h1 style="text-align: center;">Create {{ title }} Listing</h1>
+        </div>
 
         <div id="form-container">
             <form class="flex-column-body" method="POST" autocomplete="off" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form }}
-                <input type="submit" value="submit">
+                <div id="submit-container">
+                    <input type="submit" value="submit">
+                    {% if title == "Volunteering" %}
+                        <a class="back-arrow" href="{% url 'private:volunteering_opps' %}"><i class='bx bx-x bx-md'></i>cancel</a>
+                    {% else %}
+                        <a class="back-arrow" href="{% url 'private:events' %}"><i class='bx bx-x bx-md'></i> cancel</a>
+                    {% endif %}
+                </div>
             </form>
         </div>   
     </body>

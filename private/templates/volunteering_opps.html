@@ -16,6 +16,11 @@
     <div id="top">
         <h1 id="heading">volunteering opportunities</h1>
         <div id="options">
+            {% if completed %}
+                <a id="view-completed" href="{% url 'private:volunteering_opps' %}"><i class='bx bx-history'></i> view current</a>
+            {% else %}
+                <a id="view-completed" href="{% url 'private:volunteering_completed' %}"><i class='bx bx-history'></i> view completed</a>
+            {% endif %}
             <div class='tabs'>
                 <button id="l" class='tab l tab-inactive'>mine</button>
                 <button id="r" class='tab r'>all</button>
@@ -52,7 +57,7 @@
                             <div class="posted-by-tag">posted by</div>
                             <div class="officer-name-number">
                                 <div class="officer-name">{{ opp.posted_by.user.first_name }} {{ opp.posted_by.user.last_name }}</div>
-                                <div class="officer-number">281-508-9166</div>
+                                <div class="officer-number">{{ opp.posted_by.phone_number }}</div>
                             </div>
                         </div>
                     {% endif %}
@@ -66,6 +71,8 @@
                     </div>
                 {% elif account in opp.members.all %}
                     <button class="register registered"><i class='bx bx-check'></i><div class="register-text">unregister</div></button>
+                {% elif opp.complete %}
+                    <div class="register register-closed"><div class="register-text">closed</div></div>
                 {% elif user|is_member %}
                     <button class="register unregistered"><i class='bx bx-check'></i><div class="register-text">register</div></button>
                 {% endif %}

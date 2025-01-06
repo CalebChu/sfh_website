@@ -10,11 +10,24 @@ import json
 from django.db.models import Q
 
 
-def check_permission(user, signed_in=True, is_member_or_officer=True, is_officer=False):
+def check_permission(user, signed_in=True, is_member_or_officer=True, is_officer=False, is_member=False):
+    """
+    Checks if a user has the required permissions based on their authentication status and roles.
+    Args:
+        user (User): The user object to check permissions for.
+        signed_in (bool, optional): Whether the user needs to be signed in. Defaults to True.
+        is_member_or_officer (bool, optional): Whether the user needs to be either a member or an officer. Defaults to True.
+        is_officer (bool, optional): Whether the user needs to be an officer. Defaults to False.
+        is_member (bool, optional): Whether the user needs to be a member. Defaults to False.
+    Returns:
+        bool: True if the user has the required permissions, False otherwise.
+    """
     if signed_in and not user.is_authenticated:
         return False
     if is_officer and not Officer.objects.is_officer(user):
         return False 
+    if is_member and not Member.objects.member_exists(user):
+        return False
     if is_member_or_officer and not (Officer.objects.is_officer(user) or Member.objects.member_exists(user)):
         return False 
 
@@ -22,6 +35,16 @@ def check_permission(user, signed_in=True, is_member_or_officer=True, is_officer
 
 
 def get_officer_or_member(request):
+    """
+    Retrieve either a Member or an Officer object based on the user in the request.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing the user information.
+
+    Returns:
+        tuple: A tuple containing the retrieved object (Member or Officer) and a boolean.
+               The boolean is False if the object is a Member, and True if the object is an Officer.
+    """
     if Member.objects.member_exists(request.user):
         return Member.objects.get(user=request.user), False
     else:
@@ -29,6 +52,17 @@ def get_officer_or_member(request):
 
 
 def get_dashboard_preview(model):
+    """
+    Generates a preview of the dashboard data and calculates overflow.
+    Args:
+        model: A Django QuerySet or similar iterable containing the data to be previewed.
+    Returns:
+        tuple: A tuple containing:
+            - preview (QuerySet or list): The first two items of the model if there is overflow, 
+              otherwise the entire model.
+            - overflow (int): The number of items exceeding the preview limit if the model 
+              contains 4 or more items, otherwise 0.
+    """
     overflow = max(model.count() - 2, 0) if model.count() >= 4 else 0
     preview = model[:2] if overflow >= 2 else model
 
@@ -37,29 +71,61 @@ def get_dashboard_preview(model):
 
 # Create your views here.
 def dashboard(request):
+    """
+    Renders the dashboard view for the user.
+    This view checks if the user has the necessary permissions to access the dashboard.
+    It retrieves the user's account and determines if the user is an officer or a member.
+    Based on the user's role, it fetches the relevant volunteering opportunities and events
+    that are not yet complete. The view also updates the status of volunteering opportunities
+    and events.
+    Args:
+        request (HttpRequest): The HTTP request object.
+    Returns:
+        HttpResponse: The rendered dashboard page with the context containing:
+            - volunteering (QuerySet): The volunteering opportunities for the user.
+            - v_overflow (bool): Indicator if there are more volunteering opportunities than displayed.
+            - events (QuerySet): The events that are not yet complete.
+            - e_overflow (bool): Indicator if there are more events than displayed.
+    """
     if not check_permission(request.user):
         return HttpResponseForbidden()
 
     account, is_officer = get_officer_or_member(request)
     volunteering = None
-    events = Event.objects.all()
-    announcements = Announcement.objects.all()
+    events = Event.objects.filter(complete=False)
+    # announcements = Announcement.objects.all()
 
     VolunteeringOpp.objects.update_status()
     Event.objects.update_status()
     if is_officer:
-        volunteering = VolunteeringOpp.objects.filter(posted_by=account, listed=True)
+        volunteering = VolunteeringOpp.objects.filter(posted_by=account, complete=False)
     else: 
-        volunteering = VolunteeringOpp.objects.filter(members=account, listed=True)
+        volunteering = VolunteeringOpp.objects.filter(members=account, complete=False)
 
     volunteering, v_overflow = get_dashboard_preview(volunteering)
     events, e_overflow = get_dashboard_preview(events)
-    announcements, a_overflow = get_dashboard_preview(announcements)
+    # announcements, a_overflow = get_dashboard_preview(announcements)
 
-    return render(request, 'dashboard.html', {"volunteering": volunteering, "v_overflow": v_overflow, "events": events, "e_overflow": e_overflow, "announcements": announcements, "a_overflow": a_overflow,})
+    return render(request, 'dashboard.html', {"volunteering": volunteering, "v_overflow": v_overflow, "events": events, "e_overflow": e_overflow})
 
 
 def sign_up(request, opp_or_event):
+    """
+    Handles the sign-up process for an opportunity or event.
+    Args:
+        request (HttpRequest): The HTTP request object containing user and body data.
+        opp_or_event (Model): The model class representing the opportunity or event.
+    Returns:
+        JsonResponse: A JSON response with the status of the sign-up process.
+    Possible status values:
+        - "failed": If the opportunity or event does not exist or the user does not have permission.
+        - "unregistered": If the user was previously registered and has been unregistered.
+        - "sign up closed": If the sign-up period is closed or the event is complete.
+        - "registered": If the user has been successfully registered.
+    """
+    if not check_permission(request.user, is_member=True):
+        return HttpResponseForbidden()
+
     body_unicode = request.body.decode('utf-8')
     id = int(json.loads(body_unicode))
     status = "failed"
@@ -88,6 +154,20 @@ def sign_up(request, opp_or_event):
 
 
 def volunteering_opps(request):
+    """
+    Handle the volunteering opportunities view.
+    This view handles the display and sign-up for volunteering opportunities.
+    It performs the following actions:
+    - Checks if the user has the necessary permissions.
+    - Updates the status of volunteering opportunities.
+    - Handles the sign-up process if the request method is POST.
+    - Filters and processes the list of volunteering opportunities.
+    - Renders the volunteering opportunities page.
+    Args:
+        request (HttpRequest): The HTTP request object.
+    Returns:
+        HttpResponse: The HTTP response object with the rendered volunteering opportunities page or a forbidden response.
+    """
     if not check_permission(request.user):
         return HttpResponseForbidden()
 
@@ -97,12 +177,44 @@ def volunteering_opps(request):
         return sign_up(request, VolunteeringOpp)
 
     opps_list = VolunteeringOpp.objects.filter(listed=True)
+
+    for opp in opps_list.filter(complete=True):
+        if Attendance.objects.filter(opp=opp, marked=True).count() == opp.members.count():
+            opp.listed = False
+            opp.save()
+
     account, is_officer = get_officer_or_member(request)
+    opps_list = VolunteeringOpp.objects.filter(listed=True)
 
     return render(request, 'volunteering_opps.html', {'opps': opps_list, 'account': account})
 
 
+def volunteering_completed(request):
+    """
+    Handles the request to view completed volunteering opportunities.
+    This view checks if the user has the necessary permissions to access the page.
+    If the user does not have permission, it returns an HttpResponseForbidden.
+    Otherwise, it retrieves a list of volunteering opportunities that are marked as not listed
+    and renders them in the 'volunteering_opps.html' template with a context indicating
+    that these opportunities are completed.
+    Args:
+        request (HttpRequest): The HTTP request object.
+    Returns:
+        HttpResponse: The rendered 'volunteering_opps.html' template with the list of completed
+                      volunteering opportunities, or an HttpResponseForbidden if the user lacks permission.
+    """
+    if not check_permission(request.user):
+        return HttpResponseForbidden()
+
+    opps_list = VolunteeringOpp.objects.filter(listed=False)
+
+    return render(request, 'volunteering_opps.html', {'opps': opps_list, 'completed': True})
+
+
 def edit_volunteering_opp(request, id):
+    if not check_permission(request.user, is_officer=True):
+        return HttpResponseForbidden()
+
     instance = VolunteeringOpp.objects.get(id=id)
 
     if instance.posted_by != Officer.objects.get(user=request.user):
@@ -112,6 +224,9 @@ def edit_volunteering_opp(request, id):
 
 
 def delete_volunteering_opp(request, id):
+    if not check_permission(request.user, is_officer=True):
+        return HttpResponseForbidden()
+
     instance = VolunteeringOpp.objects.get(id=id)
 
     if instance.posted_by != Officer.objects.get(user=request.user):
@@ -155,6 +270,13 @@ def create_volunteering_opp(request, instance=None):
 
 
 def volunteering_attendance(request, id):
+    if not check_permission(request.user, is_officer=True):
+        return HttpResponseForbidden()
+
+    volunteering = VolunteeringOpp.objects.get_if_exists(id)
+    if volunteering.posted_by != Officer.objects.get(user=request.user):
+        return HttpResponseForbidden()
+
     if request.method == "POST":
         status = "incomplete"
         body_unicode = request.body.decode('utf-8')
@@ -192,8 +314,6 @@ def volunteering_attendance(request, id):
                 attendance_obj.marked = True
                 attendance_obj.save()
 
-                
-
 
         response = {"status": status}
 
@@ -216,7 +336,19 @@ def events(request):
     return render(request, 'events.html', {'events': eventObjs})
 
 
+def events_completed(request):
+    if not check_permission(request.user):
+        return HttpResponseForbidden() 
+
+    eventObjs = Event.objects.filter(listed=False)
+
+    return render(request, 'events.html', {'events': eventObjs, 'completed': True})
+
+
 def generate_event_attendance(request, id, option=None):
+    if not check_permission(request.user, is_officer=True):
+        return HttpResponseForbidden()
+
     event = Event.objects.get_if_exists(id)
 
     if event:
@@ -232,6 +364,7 @@ def generate_event_attendance(request, id, option=None):
                 event.attendance_open = False
 
                 if option == "markabsences":
+                    event.listed = False
                     for member in Member.objects.filter(~Q(event=event)):
                         attendance_obj = EventAttendance.objects.create(event=event, member=member)
                         attendance_obj.point_transaction = PointTransaction.objects.create(performed_by=event.posted_by, for_event=True, member=member, value=-1*event.points_available, description=event.title, subtract=True)
@@ -274,15 +407,42 @@ def create_event(request, instance=None):
 
 
 def edit_event(request, id):
-    instance = Event.objects.get(id=id)
-
-    if instance.posted_by != Officer.objects.get(user=request.user):
+    """
+    Handles the editing of an existing event.
+    This view checks if the user has the necessary permissions to edit an event.
+    If the user does not have the required permissions, it returns an HTTP 403 Forbidden response.
+    If the user has the required permissions, it retrieves the event instance by its ID and
+    delegates the request to the create_event view for further processing.
+    Args:
+        request (HttpRequest): The HTTP request object.
+        id (int): The ID of the event to be edited.
+    Returns:
+        HttpResponse: The response generated by the create_event view or an HTTP 403 Forbidden response.
+    """
+    if not check_permission(request.user, is_officer=True):
         return HttpResponseForbidden()
+
+    instance = Event.objects.get(id=id)
 
     return create_event(request, instance=instance)    
 
 
 def event_attendance(request, eid, code):
+    """
+    Handles the attendance of an event by a user.
+    This view function checks if the user has the necessary permissions to attend the event.
+    If the user is permitted, it validates the attendance code and updates the event attendance
+    records accordingly. It also creates a point transaction for the attended event.
+    Args:
+        request (HttpRequest): The HTTP request object containing user information.
+        eid (int): The ID of the event.
+        code (str): The attendance code provided by the user.
+    Returns:
+        HttpResponse: Renders the event attendance result page with the validation result.
+    """
+    if not check_permission(request.user):
+        return HttpResponseForbidden()
+
     valid, result = validate_attendance(eid, request.user, code)
 
     print(valid, result)
@@ -303,6 +463,23 @@ def event_attendance(request, eid, code):
 
 
 def validate_attendance(eid, user, code):
+    """
+    Validates the attendance of a user for a specific event.
+    Args:
+        eid (int): The ID of the event.
+        user (User): The user object representing the attendee.
+        code (str): The attendance code provided by the user.
+    Returns:
+        tuple: A tuple containing a boolean and an integer.
+            - The boolean indicates whether the attendance is valid.
+            - The integer is an error code representing the reason for invalid attendance:
+                1. The user is not a member.
+                2. The event does not exist.
+                3. The provided code does not match the event's current code.
+                4. The user has already attended the event.
+                5. The attendance period for the event is closed.
+                0. The attendance is valid.
+    """
     event = Event.objects.get_if_exists(eid)
 
     if event and event.attendance_open:
@@ -324,7 +501,13 @@ def validate_attendance(eid, user, code):
 
 
 def announcements(request):
+    if not check_permission(request.user):
+        return HttpResponseForbidden()
+
     if request.method == "POST":
+        if not check_permission(request.user, is_officer=True):
+            return HttpResponseForbidden()
+
         officer = Officer.objects.get(user=request.user)
         form = AnnouncementForm(request.POST, instance=Announcement(posted_by=officer))
 
@@ -339,7 +522,10 @@ def announcements(request):
     return render(request, 'announcements.html', {'announcements': announcementsDisplay, "form": form})
 
 
-def points(request):
+def points(request): 
+    if not check_permission(request.user):
+        return HttpResponseForbidden()
+
     account, is_officer = get_officer_or_member(request)    
 
     if (account and not is_officer):
@@ -355,6 +541,9 @@ def count_points(transactions):
 
 
 def edit_points(request, ids):
+    if not check_permission(request.user, is_officer=True):
+        return HttpResponseForbidden()
+
     members_list = [Member.objects.get(id=int(id)) for id in set(ids.split("+"))]
 
     if request.method == "POST":
@@ -375,6 +564,9 @@ def edit_points(request, ids):
 
 
 def leaderboard(request):
+    if not check_permission(request.user):
+        return HttpResponseForbidden()
+
     users_unsorted = Member.objects.all()
     users_sorted = sorted(users_unsorted, key=lambda t: -1*count_points(PointTransaction.objects.filter(member=t)))
 

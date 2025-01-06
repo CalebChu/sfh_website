@@ -11,6 +11,11 @@
     <div id="top">
         <h1 id="heading">events</h1>
         <div id="options">
+            {% if completed %}
+                <a id="view-completed" href="{% url 'private:events' %}"><i class='bx bx-history'></i> view current</a>
+            {% else %}
+                <a id="view-completed" href="{% url 'private:events_completed' %}"><i class='bx bx-history'></i> view completed</a>
+            {% endif %}
             {% if user|is_officer %}
                 <a href="{% url 'private:create_event' %}"><img id="add-icon" class="med-icon" src="{% static "images/add.png" %}"></a>
             {% endif %}
@@ -32,7 +37,7 @@
                             <div class="posted-by-tag">posted by</div>
                             <div class="officer-name-number">
                                 <div class="officer-name">{{ event.posted_by.user.first_name }} {{ event.posted_by.user.last_name }}</div>
-                                <div class="officer-number">281-508-9166</div>
+                                <div class="officer-number">{{ event.posted_by.phone_number }}</div>
                             </div>
                         </div>
                     {% endif %}
@@ -40,12 +45,10 @@
                 <div class="opp-bottom">
                 {% if user|is_officer %}
                     <a href="{% url 'private:event_attendance' event.id %}" class="attendance officer-option"><div class="register-text">attendance</div></a>
-                    {% if user == event.posted_by.user %}
-                        <div class="officer-options">
-                            <a href="{% url 'private:edit_event' event.id %}" class="edit officer-option"><div class="register-text">edit</div></a>
-                            <a href="{% url 'private:edit_event' event.id %}" class="delete officer-option"><div class="register-text">delete</div></a>
-                        </div>
-                    {% endif %}
+                    <div class="officer-options">
+                        <a href="{% url 'private:edit_event' event.id %}" class="edit officer-option"><div class="register-text">edit</div></a>
+                        <a href="{% url 'private:edit_event' event.id %}" class="delete officer-option"><div class="register-text">delete</div></a>
+                    </div>
                 {% endif %}
                 </div>
             </div>

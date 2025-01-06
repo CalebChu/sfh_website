@@ -159,3 +159,5 @@ SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'
 
 MEDIA_ROOT = ''
 MEDIA_URL = ''
+
+SIGN_UPS_OPEN = True

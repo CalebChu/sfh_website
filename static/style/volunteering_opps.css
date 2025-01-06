@@ -118,7 +118,13 @@
     border: var(--secondary-one) 1px solid;
 }
 
-.register:active {
+.register-closed {
+    border: 0;
+    background-color: var(--accent-t);
+    color: var(--dominant);
+}
+
+button.register:active {
     filter: brightness(0.9);
 }
 
@@ -194,4 +200,21 @@
     align-items: center;
     flex-direction: column;
     color: var(--accent-t);
+}
+
+#view-completed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--xs);
+    border-radius: 5px;
+    background-color: var(--secondary-one);
+    color: var(--dominant);
+    text-decoration: none;
+    transition: filter 0.1s;
+    gap: var(--xxs);
+}
+
+#view-completed:hover {
+    filter: brightness(0.9);
 }

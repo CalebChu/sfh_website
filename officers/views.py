@@ -7,12 +7,15 @@ from members.models import Member
 from .forms import CodeForm, OfficerForm
 from django.contrib.auth.models import Group
 from default.forms import UserForm
+from django.conf import settings
 
 
 def check_permission(user, signed_in=True, is_officer=True, super_user=False):
     if signed_in and not user.is_authenticated:
         return False
     if is_officer and not Officer.objects.filter(user=user).exists():
+        return False
+    if super_user and not user.is_superuser:
         return False
 
     return True
@@ -32,7 +35,7 @@ def handle_form_post(request):
             form = OfficerForm(request.POST, request.FILES, instance=officer)
             user_form = UserForm(request.POST, instance=request.user)
 
-            if form.is_valid() and user_form.is_valid() and created:
+            if form.is_valid() and user_form.is_valid() and created and settings.SIGN_UPS_OPEN:
                 form.save()
                 user_form.save()
                 request.user.groups.add(officers_group)
@@ -53,7 +56,7 @@ def handle_form_post(request):
 
 
 def officer_codes(request):
-    if not request.user.is_superuser and not check_permission(request.user):
+    if not check_permission(request.user, super_user=True):
         return HttpResponseForbidden()
 
     if request.method == "POST":
@@ -114,6 +117,9 @@ def edit_profile(request):
 
 
 def profile(request, id):
+    if not check_permission(request.user, is_officer=False):
+        return HttpResponseForbidden()
+
     if (not Officer.objects.filter(id=id).exists()):
         return HttpResponseNotFound()
     

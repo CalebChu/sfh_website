@@ -5,6 +5,7 @@ from .models import Member
 from private.models import Attendance, EventAttendance, PointTransaction
 from django.contrib.auth.models import Group
 from default.forms import UserForm
+from django.conf import settings
 
 
 def check_permission(user, signed_in=True, completed_form=True):
@@ -24,7 +25,7 @@ def handle_form_post(request):
     form = MemberForm(request.POST, instance=member)
     user_form = UserForm(request.POST, instance=request.user)
 
-    if form.is_valid() and user_form.is_valid() and created:
+    if form.is_valid() and user_form.is_valid() and created and settings.SIGN_UPS_OPEN:
         request.user.groups.add(members_group)
         form.save()
         user_form.save()
@@ -85,6 +86,9 @@ def edit_profile(request):
 
 
 def profile(request, id):
+    if check_permission(request.user):
+        return HttpResponseForbidden()
+
     if (not Member.objects.filter(id=id).exists()):
         return HttpResponseNotFound()
     

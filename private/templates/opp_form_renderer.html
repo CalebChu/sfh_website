@@ -9,7 +9,7 @@
     {% elif "duration" in field.name %}
         {% if "h" in field.name %}
         <div>
-            <label for="id_{{ field.name }}">duration: </label>
+            <label for="id_{{ field.name }}">Duration: </label>
             {{ field.errors }}
             <div>
                 <input type="number" name="{{ field.name }}" required id="id_{{ field.name }}" min="0" max="12" value="{{ form.instance.duration_hours }}">{{ field.label }}

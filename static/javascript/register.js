@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const opp_listings = document.querySelectorAll(".opp-listing");
 
     for (const opp_listing of opp_listings) {
-        const register = opp_listing.querySelector(".register");
+        const register = opp_listing.querySelector("button.register");
 
         if (!register) {
             continue;
