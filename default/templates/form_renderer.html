@@ -1,7 +1,7 @@
 {% for field in form %}
     <div class="fieldWrapper">
         {{ field.errors }}
-        {% if field.name == 'emphasized' %}
+        {% if field.name == 'auto_scale' %}
             {{ field.label }} {{ field }}
             <div class='subtext'>the image will be displayed wider, taller, or both, depending on the aspect ratio and resolution.</div>
         {% else %}

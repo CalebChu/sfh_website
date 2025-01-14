@@ -56,24 +56,22 @@ h1 {
 }
 
 input[type="submit"], input[type="file"]::file-selector-button {
-    font-weight: 300;
     text-decoration: none;
     font-size: 1.2rem;
-    border-radius: 0;
+    border-radius: 5px;
     border: none;
-    background-color: var(--accent);
+    background-color: var(--secondary-two);
     color: var(--dominant);
     padding: var(--s);
 }
 
 a {
-    font-weight: 300;
     text-decoration: none;
     font-size: 1.2rem;
-    border: 2px solid var(--accent);
     box-sizing: border-box;
-    height: 100%;
-    background-color: var(--dominant);
-    color: var(--accent);
-    padding: var(--s);
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }

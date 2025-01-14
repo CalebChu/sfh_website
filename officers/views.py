@@ -56,7 +56,7 @@ def handle_form_post(request):
 
 
 def officer_codes(request):
-    if not check_permission(request.user, super_user=True):
+    if not check_permission(request.user, is_officer=False, super_user=True):
         return HttpResponseForbidden()
 
     if request.method == "POST":

@@ -1,22 +1,78 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load account_type %}
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'style/index.css' %}">
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'javascript/index.js' %}"></script>
+    <script src="{% static 'javascript/index-text-effect.js' %}"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
 {% endblock %}
 
 {% block body %}
-    <div id="title">
-        <i id="content-indicator" class="bx bx-chevron-down bx-lg"></i>
+    <div id="header-container">
+        <div id="index-header">
+            <div id="header-panel">
+                <div id="panel-title">
+                    Contribute Your Service for Humanity
+                </div>
+                <div id="panel-desc">
+                    Join us in our commitment to providing volunteering service to the Greater Houston Area and developing a strong student community. 
+                </div>
+                {% if user|is_member or user|is_officer %}
+                    <a id="header-sign-up" href="{% url 'private:dashboard' %}">my dashboard</a>
+                {% elif user.is_authenticated %}
+                    <a id="header-sign-up" href="{% url 'members:form' %}">complete membership form</a>
+                {% else %}
+                    <a id="header-sign-up" href="{% url 'default:sign_in' %}">sign up for membership</a>
+                {% endif %}
+            </div>
+            <div id="header-panel-slider">
+            </div>
+        </div>
+        <div class="slider">
+            {% comment %} <img id="slide-1" src="https://picsum.photos/seed/1/1920/1080">
+            <img id="slide-2" src="https://picsum.photos/seed/2/1920/1080">
+            <img id="slide-3" src="https://picsum.photos/seed/3/1920/1080">
+            <img id="slide-4" src="https://picsum.photos/seed/4/1920/1080">
+            <img id="slide-5" src="https://picsum.photos/seed/5/1920/1080"> {% endcomment %}
+        </div>
     </div>
 
-    <div id="content"></div>
+    <div id="content" class="flex-column-body">
+        <div class="section">
+            <div class="section-header">Our Impact</div>
+            <div id="impact-stats">
+                <div class="impact-stat">
+                    <div class="stat-value">150+</div>
+                    <div class="stat-label">members</div>
+                </div>
+                <div class="impact-stat">
+                    <div class="stat-value">3,000+</div>
+                    <div class="stat-label">hours volunteered</div>
+                </div>
+                <div class="impact-stat">
+                    <div class="stat-value">800+</div>
+                    <div class="stat-label">yearly event attendances</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div id="id-mission-container">
+                <div id="id-mission-img">
+                    <img src="{% static 'images/mission1.jpg' %}">
+                </div>
+                <div id="id-mission">
+                    <div class="section-header">Our Identitiy & Mission</div>
+                    <div id="id-mission-desc">
+                    SfH (Service for Humanity) is a student-led organization at Austin High School focused on connecting students with volunteering opportunities in the Houston area. Serving as a space for connection, SfH cultivates individual bonds and an overall sense of student community. 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {% comment %} <script type="module" src="{% static 'javascript/3d.js' %}"></script> {% endcomment %}
-    {% comment %} <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.3/build/spline-viewer.js"></script>
-    <spline-viewer id='title' url="https://prod.spline.design/2i6oQiCnTCiC-RD4/scene.splinecode"></spline-viewer> {% endcomment %}
+    {% include 'footer.html' %}
 {% endblock %}

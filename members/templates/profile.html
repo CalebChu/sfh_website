@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load account_type %}
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'style/profile.css' %}">
@@ -21,6 +22,9 @@
             <div class="profile-stat small-stat"><div>Volunteering Attended:</div><div>{{ v_attended }}</div></div>
             <div class="profile-stat small-stat"><div>Events Attended:</div><div>{{ e_attended }}</div></div>
             <div class="profile-stat large-stat"><div>Point Ranking:</div><div>{{ ranking }}</div></div>
+            {% if user|is_officer %}
+                <div class="profile-stat large-stat"><div>Phone Number:</div><div>{{ member.phone_number }}</div></div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

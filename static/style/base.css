@@ -286,6 +286,7 @@ input[type="submit"] {
 
 body {
     background-color: var(--dominant);
+    color: var(--accent);
     margin: 0;
     overflow-x: hidden;
     font-family: 'Josefin Sans', sans-serif;
@@ -296,3 +297,12 @@ body {
     src: url('../fonts/rogerex-font/RogerexRegular-L32KD.ttf') format('truetype');
 }
 
+#body-footer-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-body {
+    flex-grow: 1;
+}

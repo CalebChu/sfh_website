@@ -56,20 +56,18 @@
 <div class="container">
     {% if request.session.user_data %}
     <div>
-        <p>Hi {{ request.session.user_data.given_name }} 🙂</p>
-        <p>Your email is {{ request.session.user_data.email }}</p>
+        <p>Signed in with {{ request.session.user_data.email }}</p>
         <img src="{{ request.session.user_data.picture }}" alt="User picture">
         <p>Click here to <a href="{% url 'default:sign_out' %}">Sign out</a></p>
     </div>
     {% else %}
     <div>
-        <p>Hi there 🙂 </p>
-        <p>Click below to sign in with Google</p>
+        <p>Sign in with Google</p>
         <!--            Paste the generated HTML code for Google sign in button goes here-->
         <div id="g_id_onload"
             data-client_id="315344692568-7ob5gte8klqm0jfiknp1stiki0173qkp.apps.googleusercontent.com"
             data-context="signin"
-            data-ux_mode="popup"
+            data-ux_mode="redirect"
             data-login_uri="http://localhost:8000/auth-receiver"
             data-itp_support="true">
         </div>
@@ -86,7 +84,5 @@
     {% endif %}
 
 </div>
-
-<a href="{% url 'default:index' %}">home</a>
 </body>
 </html>

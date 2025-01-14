@@ -11,7 +11,7 @@ from django.conf import settings
 def check_permission(user, signed_in=True, completed_form=True):
     if signed_in and not user.is_authenticated:
         return False
-    if completed_form and not Member.objects.get(user=user).is_complete():
+    if completed_form and Member.objects.member_exists(user) and not Member.objects.get(user=user).is_complete():
         return False 
 
     return True
@@ -86,7 +86,7 @@ def edit_profile(request):
 
 
 def profile(request, id):
-    if check_permission(request.user):
+    if not check_permission(request.user):
         return HttpResponseForbidden()
 
     if (not Member.objects.filter(id=id).exists()):

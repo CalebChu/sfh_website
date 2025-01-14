@@ -17,11 +17,12 @@
     </div>
     <div id="right-section">
         <div id="points-display">
-            <div class="display-title">
-                my points
-            </div>
             <div class="display-value">
-                <div class="display-main">
+                {% if points > 60 %}
+                <div class="display-main display-green">
+                {% else %}
+                <div class="display-main display-red">
+                {% endif %}
                     {{ points }}
                 </div>
                 <div class="display-sub">

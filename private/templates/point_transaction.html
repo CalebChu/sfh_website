@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -10,21 +12,28 @@
         <title>sfh</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'style/add_points.css' %}">
+        {% include "base_styles.html" %}
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
-        <div>
-            editing {{ members }}
+        <div id="container">
+            <div id="message-text">
+                Editing: {% for member in members %}<div class="member-name">{{ member.user.first_name }} {{ member.user.last_name }}</div>{% endfor %}
+            </div>
+
+            <form method="POST" autocomplete="off" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+
+                <div id="form-bottom">
+                    <input type="submit" value="submit">
+                    <a id="cancel" href="{% url 'private:points' %}"><i class="bx bx-x bx-md"></i>cancel</a>
+                </div>
+            </form>
         </div>
-
-        <form method="POST" autocomplete="off" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form }}
-
-            <input type="submit">
-        </form>
     </body>
 </html>
