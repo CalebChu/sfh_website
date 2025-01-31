@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os 
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-=b7odr9m==#szveja)#vy_nm*htch5n48u8e9-pbvq$bwcqj4c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.sfhahs.org', 'sfhahs.org']
 
 
 # Application definition
@@ -92,11 +92,21 @@ WSGI_APPLICATION = 'sfh_website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'service': 'sfhdb_service',
-            'passfile': '.pgpass',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         },
+        'NAME': 'cchu$default',
+        'USER': 'cchu',
+        'PASSWORD': '4oCpYdiH8Vj5',
+        'HOST': 'cchu.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
+
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'OPTIONS': {
+        #     'service': 'sfhdb_service',
+        #     'passfile': '.pgpass',
+        # },
         # 'HOST': '127.0.0.1',
         # 'USER': 'postgres',
         # 'NAME': 'sfh',

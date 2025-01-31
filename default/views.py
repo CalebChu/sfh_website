@@ -1,4 +1,5 @@
 import os
+import environ
 
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
@@ -12,12 +13,14 @@ from officers.models import Officer
 from .forms import GalleryImageForm
 from .models import GalleryImage
 
+env = environ.Env()
+environ.Env().read_env()
 
 def check_permission(user, signed_in=True, is_officer=True):
     if signed_in and not user.is_authenticated:
         return False
     if is_officer and not Officer.objects.filter(user=user).exists():
-        return False 
+        return False
 
     return True
 
@@ -31,7 +34,7 @@ def is_officer(user):
 
 
 def sign_in(request):
-    return render(request, 'sign_in.html')
+    return render(request, 'sign_in.html', {"full_url": request.build_absolute_uri('/auth-receiver')})
 
 
 @csrf_exempt
@@ -43,7 +46,7 @@ def auth_receiver(request):
 
     try:
         user_data = id_token.verify_oauth2_token(
-            token, requests.Request(), os.environ['GOOGLE_OAUTH_CLIENT_ID']
+            token, requests.Request(), '315344692568-7ob5gte8klqm0jfiknp1stiki0173qkp.apps.googleusercontent.com'
         )
     except ValueError:
         return HttpResponse(status=403)
@@ -88,7 +91,7 @@ def handle_gallery_image_upload(request):
         galleryImageSubmission.save()
 
         return redirect('default:gallery')
-        
+
     return HttpResponse("could not upload image")
 
 
