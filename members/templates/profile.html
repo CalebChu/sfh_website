@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load account_type %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/profile.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="sub-body" class="flex-column-body">
+        <div id="profile-title">Member Profile</div>
+        <div id="profile-top">
+            <div id="profile-name">
+                {{ member.user.first_name }} {{ member.user.last_name }}
+                <div id="profile-grade">
+                    {{ member.grade }}th
+                </div>
+            </div>
+        </div>
+        <div id="profile-stats">
+            <div class="profile-stat large-stat"><div>Points:</div><div>{{ points }}</div></div>
+            <div class="profile-stat small-stat"><div>Volunteering Attended:</div><div>{{ v_attended }}</div></div>
+            <div class="profile-stat small-stat"><div>Events Attended:</div><div>{{ e_attended }}</div></div>
+            <div class="profile-stat large-stat"><div>Point Ranking:</div><div>{{ ranking }}</div></div>
+            {% if user|is_officer %}
+                <div class="profile-stat large-stat"><div>Phone Number:</div><div>{{ member.phone_number }}</div></div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/officers.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/officers.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="body-footer-container">
+        <div id="officers-content" class="main-body">
+            {% for officer in officers %} 
+                <div class="officer-card">
+                    <img class="image" src="{{ officer.image }}">
+                    <div class="text">
+                        <h2 class="name">{{ officer.user.first_name }} {{ officer.user.last_name }}</h3>
+                        <h5 class="role">{{ officer.role }}</h6>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% include 'footer.html' %}
+    </div>
+{% endblock %}

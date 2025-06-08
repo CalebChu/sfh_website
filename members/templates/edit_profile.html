@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'style/edit-profile.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="sub-body" class="flex-column-body">
+        <div id="profile-title">My Profile</div>
+        <form action="{% url 'members:edit_profile' %}" method="POST" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ user_form }}
+            {{ form }}
+
+            <div id="submit-container">
+                <input type="submit" value="save">
+            </div>
+        </form>
+    </div>
+{% endblock %}

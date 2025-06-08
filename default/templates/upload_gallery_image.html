@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'base_styles.html' %}
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'style/upload_gallery_image.css' %}">
+    <script src="{% static 'javascript/upload_gallery_image.js' %}"></script>
+</head>
+<body>
+    <h1>
+        upload gallery image
+    </h1>
+    <div id="img-form-wrapper">
+        <img id="img-preview">
+        <form action="{% url 'default:upload_gallery_image' %}" method="POST" autocomplete="off" enctype="multipart/form-data" id="img-form">
+            {% csrf_token %}
+            {{ form }}
+            <div id="submit-cancel-wrapper">
+                <input type="submit" value="upload">
+                <a href="{% url 'default:gallery' %}"><i class="bx bx-x bx-md"></i>cancel</a>
+            </div>
+        </form>
+    </div>
+    </body>
+</html>

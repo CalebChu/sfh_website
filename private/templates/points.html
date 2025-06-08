@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load account_type %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/points.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    {% if user|is_officer %}
+        <script src="{% static 'javascript/manage_points.js' %}"></script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if user|is_member %}
+        {% include 'member_points.html' %}
+    {% else %}
+        {% include 'officer_points.html' %}
+    {% endif %}
+{% endblock %}

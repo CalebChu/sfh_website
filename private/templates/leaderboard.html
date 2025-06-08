@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load account_points %}
+{% load static %}
+{% load profile_link %}
+
+{% block styles %}
+    <link rel='stylesheet' href="{% static 'style/leaderboard.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="sub-body">
+        {% comment %} <div class="leaderboard-top">
+            <img src="{% static 'images/podium-r.png' %}" class="large-icon">
+            <div id="podium-container">
+                <div class="podium-section">
+                    <div>{{ leaderboard.1.user.first_name }} {{ leaderboard.1.user.last_name }}</div>
+                    <div id="podium-second" class="podium-stand"></div>
+                </div>
+                <div class="podium-section">
+                    <div>{{ leaderboard.0.user.first_name }} {{ leaderboard.0.user.last_name }}</div>
+                    <div id="podium-first" class="podium-stand"></div>
+                </div>
+                <div class="podium-section">
+                    <div>{{ leaderboard.2.user.first_name }} {{ leaderboard.2.user.last_name }}</div>
+                    <div id="podium-third" class="podium-stand"></div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+        <div class="flex-column-body">
+            {% for member in leaderboard|slice:":" %}
+                <div class="leaderboard-item">
+                    <div class="leaderboard-item-left">
+                        <div class="leaderboard-item-position" id="pos-{{ forloop.counter0|add:"1" }}">{{ forloop.counter0|add:"1" }}</div>
+                        <div class="leaderboard-item-name">{{ member|profile }}</div>
+                    </div>
+                    <div class="leaderboard-item-points">{{ member|account_points }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+#header-body {
+    z-index: 100;
+    position: fixed;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dominant);
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 5px;
+}
+
+#header-left {
+    position: absolute;
+    left: 0%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#site-title {
+    margin: 0;
+    font-family: 'Rogerex', sans-serif;
+    font-style: italic;
+    font-weight: 900;
+    font-size: 4rem;
+    padding-top: 5px;
+    color: var(--accent);
+    text-align: center;
+}
+
+#account-wrapper {
+    position: absolute;
+    right: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#account-nav {
+    right: 0%;
+}
+
+#dashboard-header-nav {
+    /* left: 0%; */
+    left: calc(0% - (1.5rem + 2 * var(--s)));
+}
+
+.nav {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    width: 300%;
+    min-width: 20ch;
+    padding: var(--s);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--s);
+    background-color: var(--dominant);
+    border-bottom: 4px var(--secondary-one) solid;
+    transition: opacity 0.2s, visibility 0s 0.2s;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.nav-wrapper:hover>.nav {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+.nav:hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+#nav-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--xs);
+    width: 100%;
+    margin-bottom: var(--xs);
+}
+
+#email {
+    overflow-wrap: break-word;
+    width: 100%;
+    text-align: center;
+    font-size: large;
+}
+
+#account-type {
+    font-size: small;
+    font-weight: bold;
+    color: var(--accent-t);
+}
+
+#account-email {
+    font-size: small;
+    color: var(--accent-t);
+}

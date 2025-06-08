@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load account_type %}
+{% load time_handler %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/volunteering_opps.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/register.js' %}"></script>
+    <script src="{% static 'javascript/changetab.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="top">
+        <h1 id="heading">volunteering opportunities</h1>
+        <div id="options">
+            {% if completed %}
+                <a id="view-completed" href="{% url 'private:volunteering_opps' %}"><i class='bx bx-history'></i> view current</a>
+            {% else %}
+                <a id="view-completed" href="{% url 'private:volunteering_completed' %}"><i class='bx bx-history'></i> view completed</a>
+            {% endif %}
+            <div class='tabs'>
+                <button id="l" class='tab l tab-inactive'>mine</button>
+                <button id="r" class='tab r'>all</button>
+            </div>
+            {% if user|is_officer %}
+                <a href="{% url 'private:create_opp' %}"><img id="add-icon" class="med-icon" src="{% static "images/add.png" %}"></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="sub-body">
+        {% for opp in opps %}
+            {% if user == opp.posted_by.user or account in opp.members.all %}
+            <div id="opp-id-{{ opp.id }}" class="opp-listing tab-l-item">
+            {% else %}
+            <div id="opp-id-{{ opp.id }}" class="opp-listing tab-r-item">
+            {% endif %}
+                <div class="opp-main">
+                    <div class="opp-top">
+                        <div class="opp-title">{{ opp.title }}</div>
+                        {% if opp.members.all.count == opp.max_members %}
+                            <div class="opp-member-count full">{{ opp.members.all.count }}/{{opp.max_members}}<img class='small-icon' src="{% static 'images/user.png' %}"></div>
+                        {% else %}
+                            <div class="opp-member-count">{{ opp.members.all.count }}/{{opp.max_members}}<img class='small-icon' src="{% static 'images/user.png' %}"></div>
+                        {% endif %}
+                    </div>
+                    <div class="opp-info">
+                        <div class="location">{{ opp.location }}</div>  <div class="date-time">{{ opp.date_time }} - {{ opp.date_time|calculate_end_time:opp.duration }}</div>
+                    </div>
+                    <div class="description">{{ opp.description }}</div>
+
+                    {% if opp.show_officer_info %}
+                        <div class="officer-info">
+                            <div class="posted-by-tag">posted by</div>
+                            <div class="officer-name-number">
+                                <div class="officer-name">{{ opp.posted_by.user.first_name }} {{ opp.posted_by.user.last_name }}</div>
+                                <div class="officer-number">{{ opp.posted_by.phone_number }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="opp-bottom">
+                {% if user|is_officer and user == opp.posted_by.user %}
+                    <a href="{% url 'private:v_attendance' opp.id %}" class="attendance officer-option"><div class="register-text">attendance</div></a>
+                    <div class="officer-options">
+                        <a href="{% url 'private:edit_opp' opp.id %}" class="edit officer-option"><div class="register-text">edit</div></a>
+                        <a href="{% url 'private:delete_opp' opp.id %}" class="delete officer-option"><div class="register-text">delete</div></a>
+                    </div>
+                {% elif account in opp.members.all %}
+                    <button class="register registered"><i class='bx bx-check'></i><div class="register-text">unregister</div></button>
+                {% elif opp.complete %}
+                    <div class="register register-closed"><div class="register-text">closed</div></div>
+                {% elif user|is_member %}
+                    <button class="register unregistered"><i class='bx bx-check'></i><div class="register-text">register</div></button>
+                {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="empty-indicator" style="display: none;">
+            <img class="large-icon" src="{% static "images/search-t.png" %}">
+            <div>it's all empty here</div>
+        </div>
+    </div>
+{% endblock %}

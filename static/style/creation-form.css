@@ -1,0 +1,36 @@
+#form-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form.flex-column-body {
+    gap: var(--xs);
+    width: auto;
+    align-items: start;
+}
+
+form>div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--m);
+    width: 100%;
+}
+
+div#top {
+    justify-content: center;
+}
+
+.back-arrow {
+    color: var(--red);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+#submit-container {
+    margin-top: var(--s);
+}

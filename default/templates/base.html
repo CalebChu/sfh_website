@@ -1,0 +1,55 @@
+{% load static %}
+{% load account_type %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>SFH</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="{% static 'javascript/sidebar.js' %}"></script>
+        <script src="{% static 'javascript/content_area.js' %}"></script>
+        {% include 'base_styles.html' %}
+        {% block styles %}{% endblock %}
+        {% block scripts %}{% endblock %}
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        {% include 'header.html' %}
+
+        <div id="cover" class="inactive">
+            <div id="close-menu">
+                <img id="close-menu-icon" class="large-icon" src="{% static 'images/cancel.png' %}">
+                <h3 id="close-menu-text">close menu</h3>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            <div id="sidebar-content">
+                <div id="navigation" class="nav-section">
+                    <a href="{% url 'default:index' %}" class="nav-link">home page</a>
+                    <a href="{% url 'default:gallery' %}" class="nav-link">gallery</a>
+                    <a href="{% url 'default:officers_info' %}" class="nav-link">officers</a>
+                    <a href="{% url 'default:site_credits' %}" class="nav-link">site credits</a>
+                </div>
+                <div id="social-links" class="nav-section">
+                    <a href="https://instagram.com/sfhaustinhs/" class="social-link nav-link"><i class="bx bxl-instagram bx-md"></i></a>
+                    <a href="https://discord.com" class="social-link nav-link"><i class="bx bxl-discord bx-md"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-area">
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+{% load static %}
+
+<div id="footer">
+    <div id="footer-top">
+        <div id="footer-logo">SFH</div>
+        <div id="footer-socials">
+            <a href="https://instagram.com/sfhaustinhs/" class="footer-social"><i class="bx bxl-instagram"></i></a>
+            <a href="https://discord.com" class="footer-social"><i class="bx bxl-discord"></i></a>
+        </div>
+    </div>
+    <div id="footer-middle">
+        <a href="{% url 'default:index' %}" class="footer-link">home page</a>
+        <a href="{% url 'default:gallery' %}" class="footer-link">gallery</a>
+        <a href="{% url 'default:officers_info' %}" class="footer-link">officers</a>
+        <a href="{% url 'default:site_credits' %}" class="footer-link">site credits</a>
+    </div>
+    <div id="footer-bottom">
+        <div id="footer-contacts">
+            <div class="footer-contact-section">
+                contact us: serviceforhumanityaustinhs@gmail.com
+            </div>
+            <div class="footer-contact-section">
+                website related inquiries: chu.calebd@gmail.com
+            </div>
+        </div>
+    </div>
+</div>

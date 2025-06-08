@@ -1,0 +1,37 @@
+#officer-codes-table {
+    display: flex;
+    flex-direction: column;
+    outline: solid black;
+}
+
+.officer-codes-table-row {
+    display: flex;
+    flex-direction: row;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.officer-codes-table-header {
+    display: flex;
+    flex-direction: row;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.narrow {
+    width: 10%;
+}
+
+.wide {
+    width: 40%;
+}
+
+.code-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.copy-button {
+    margin-right: 4px;
+}

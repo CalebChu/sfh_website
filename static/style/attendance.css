@@ -1,0 +1,122 @@
+.back-arrow {
+    text-decoration: none;
+    color: var(--accent);
+    transition: color 0.2s;
+}
+
+.back-arrow:hover {
+    color: var(--secondary-two);
+}
+
+.attendance-listing {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--s);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    font-size: larger;
+    border-radius: 5px;
+    border: 2px solid var(--accent-t);
+    box-sizing: border-box;
+}
+
+.attendee-options {
+    display: flex;
+    gap: var(--xxs);
+    justify-content: center;
+}
+
+button {
+    all: unset;
+}
+
+.mark-all {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--xxs);
+    padding-left: var(--s);
+    padding-right: var(--s);
+    box-sizing: border-box;
+    border: solid transparent 2px;
+}
+
+.mark-all-text {
+    padding-right: var(--xs);
+}
+
+.mark-present {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    background-color: var(--secondary-one);
+    color: var(--dominant);
+}
+
+.mark-absent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent);
+}
+
+.flex-column-body {
+    gap: var(--s);
+    margin-top: 0;
+}
+
+.flex-column-body.attendees {
+    gap: var(--xs);
+    margin: 0;
+    /* margin-bottom: var(--s); */
+    width: 100%;
+}
+
+#top {
+    margin-bottom: var(--xs);
+}
+
+.show-members {
+    width: 100%;
+}
+
+.attendance-opener {
+    color: var(--accent-t);
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--xs);
+}
+
+.attendance-opener .bx {
+    transition: transform 0.2s;
+}
+
+.members-container {
+    display: flex;
+    gap: var(--xxs);
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.members-container.members-container-closed {
+    display: none;
+}
+
+.open .attendance-opener .bx {
+    transform: rotate(90deg);
+}
+
+.show-absent .mark-absent {
+    display: none;
+}
+
+.show-present .mark-present {
+    display: none;
+}
+
+/* .members-container-open~.attendance-opener {
+} */

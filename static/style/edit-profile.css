@@ -1,0 +1,18 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s);
+    width: 100%;
+}
+
+/* label {
+    margin-right: var(--xs);
+} */
+
+/* form>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--m);
+    width: 100%;
+} */

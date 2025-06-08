@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load account_type %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'style/announcements.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="top">
+        <h1 id="heading">announcements</h1>
+    </div>
+    <div class="flex-column-body">
+        {% if user|is_officer %}
+            <form class="post-announcement" method="POST" autocomplete="off" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% comment %} <input type="text" placeholder="post an announcement" class="announcement-content"> {% endcomment %}
+                {{ form }}
+                {% comment %} <input type="submit" value="post"> {% endcomment %}
+            </form>
+        {% endif %}
+
+        <div class="announcements-body flex-column-body">
+        {% for announcement in announcements %}
+            <div class="announcement">
+                <div class="announcement-accent">
+                </div>
+                <div class="announcement-content">
+                    {{ announcement.content }}
+                    <div class="announcement-details">
+                        <div>{{ announcement.posted_by.user.first_name }} {{ announcement.posted_by.user.last_name }}</div>
+                        <div>{{ announcement.date_posted }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,97 @@
+#event-title {
+    font-size: xx-large; 
+    font-weight: 600;
+    color: var(--accent);
+}
+
+#attendance-info, #attendance-time, #attendance-duration-form, #attendance-duration {
+    font-size: small;
+    color: var(--accent-t);
+}
+
+#attendance-info {
+    display: flex;
+    align-items: center;
+    gap: var(--m);
+    margin-bottom: var(--m);
+}
+
+#attendance-duration-form {
+    display: flex;
+    gap: var(--s);
+    align-items: center;
+    margin-bottom: var(--m);
+}
+
+#input-container {
+    display: flex;
+    align-items: center;
+    gap: var(--xs);
+}
+
+#save-duration {
+    padding: var(--xs);
+    background-color: var(--secondary-two);
+}
+
+.flex-column-body {
+    gap: var(--xs);
+}
+
+#qr-code {
+    margin-bottom: var(--xs);
+}
+
+/* #reopen {
+    background-color: var(--dominant);
+    color: var(--secondary-one);
+    border: 1px var(--secondary-one) solid;
+} */
+
+#attendance-options {
+    display: flex;
+    align-items: center;
+    gap: var(--s);
+}
+
+.event-option {
+    border: none;
+    padding: var(--xs);
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+#refresh {
+    background-color: var(--secondary-one);
+    color: var(--dominant);
+    border: 2px solid var(--secondary-one);
+}
+
+#reopen {
+    background-color: var(--dominant);
+    color: var(--secondary-one);
+    border: 2px solid var(--secondary-one);
+    box-sizing: border-box;
+}
+
+#mark-absences {
+    background-color: var(--red);
+    color: var(--dominant);
+    border: 2px solid var(--red);
+    box-sizing: border-box;
+}
+
+#close {
+    background-color: var(--dominant);
+    color: var(--red);
+    border: 2px solid var(--red);
+    box-sizing: border-box;
+}
+
+#event-options {
+    display: flex;
+    gap: var(--m);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

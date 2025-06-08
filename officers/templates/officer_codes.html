@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'officers/officer_codes.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'officers/update_officer_codes.js' %}"></script>
+    <script src="{% static 'officers/copy_code.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center;">Officer Codes</h1>
+
+    <div id="officer-codes-table">
+        <div id="header" class="officer-codes-table-header">
+            <div class="narrow id">ID</div>
+            <div class="wide code-wrapper">
+                <div id="code-header" class="code">Code</div>
+                <button type="button" value="" class="copy-button" style="display: none;">Copy</button>
+            </div>
+            <div class="narrow active">Active</div>
+            <div class="wide used-by">Used By</div>
+        </div>
+
+        {% for values in existing_codes|dictsort:"id" %}
+            <div id="{{ values.id }}" class="officer-codes-table-row">
+                <div class="narrow id">{{ values.id }}</div>
+                <div class="wide code-wrapper">
+                    <div id="code-{{ values.id }}" class="code">{{ values.code }}</div>
+                    <button type="button" value="{{ values.id }}" class="copy-button">Copy</button>
+                </div>
+                <div class="narrow active">{{ values.active }}</div>
+                <div class="wide used-by">{{ values.used_by }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="button-container">
+        <button type="button" id="create-new">Create New Code</button>
+    </div>
+{% endblock %}
